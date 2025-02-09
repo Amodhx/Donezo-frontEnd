@@ -1,9 +1,11 @@
  import logo from '../assets/logo.png'
 import { Button, Input } from "antd";
 import { GoogleOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
+ import {useNavigate} from "react-router-dom";
 function Login(){
+    const navigate = useNavigate();
     function onLoginBtnClick(){
-
+        navigate('form')
     }
     return(
         <>
