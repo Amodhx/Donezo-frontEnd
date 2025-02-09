@@ -90,12 +90,9 @@ const tagsData = ['All','New Tasks','In Progress','Completed'];
 
 function Tasks(){
     const [selectedData,setSelectedData] = useState<DataType>()
-    const handleRowClick = (record: DataType, index: number | undefined) => {
-        console.log('Clicked row index:', index);
-        console.log('Clicked row data:', record);
+    const handleRowClick = (record: DataType) => {
         setSelectedData(record);
         setOpen(true)
-        // Call your function here
     };
     const [selectedTags, setSelectedTags] = React.useState<string>('All');
     const handleChange = (tag: string) => {
@@ -128,12 +125,12 @@ function Tasks(){
                     </Flex>
                 </div>
                 <div className={'mx-2 mt-2'}>
-                    <Table<DataType> columns={columns} dataSource={data} onRow={(record, index) => ({
-                        onClick: () => handleRowClick(record, index),
+                    <Table<DataType> columns={columns} dataSource={data} onRow={(record) => ({
+                        onClick: () => handleRowClick(record),
                     })} />
                 </div>
             </Content>
-            {open && (
+            {open && selectedData && (
                 <DrawerComponent closeModal={onClose} openModal={open} selectedData = {selectedData}/>
             )}
         </>
