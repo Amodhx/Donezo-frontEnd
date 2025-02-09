@@ -2,8 +2,10 @@ import {Content} from "antd/es/layout/layout";
 import {Flex, Table, Tag} from 'antd';
 import type { TableProps } from 'antd';
 import * as React from "react";
+import {useState} from "react";
+import DrawerComponent from "./DrawerComponent.tsx";
 
-interface DataType {
+export interface DataType {
     key: string;
     task: string;
     status: string;
@@ -68,7 +70,7 @@ const data: DataType[] = [
         estimatedTime : '25h'
     },
     {
-        key: '1',
+        key: '2',
         task: 'lorem sadnojsadn sajdnas dasdsa sad sadsa dsadsad sa dsad sa dsa as',
         status: 'Completed',
         tags: ['Completed'],
@@ -76,7 +78,7 @@ const data: DataType[] = [
         estimatedTime : '25h'
     },
     {
-        key: '1',
+        key: '3',
         task: 'lorem sadnojsadn sajdnas dasdsa sad sadsa dsadsad sa dsad sa dsa as',
         status: 'New Tasks',
         tags: ['New Tasks'],
@@ -85,12 +87,29 @@ const data: DataType[] = [
     },
 ];
 const tagsData = ['All','New Tasks','In Progress','Completed'];
+
 function Tasks(){
+    const [selectedData,setSelectedData] = useState<DataType>()
+    const handleRowClick = (record: DataType, index: number | undefined) => {
+        console.log('Clicked row index:', index);
+        console.log('Clicked row data:', record);
+        setSelectedData(record);
+        setOpen(true)
+        // Call your function here
+    };
     const [selectedTags, setSelectedTags] = React.useState<string>('All');
     const handleChange = (tag: string) => {
         const nextSelectedTags = tag
         console.log('You are interested in: ', nextSelectedTags);
         setSelectedTags(nextSelectedTags);
+        showDrawer()
+    };
+    const [open, setOpen] = useState(false);
+    const showDrawer = () => {
+        setOpen(true);
+    };
+    const onClose = () => {
+        setOpen(false);
     };
     return(
         <>
@@ -109,9 +128,14 @@ function Tasks(){
                     </Flex>
                 </div>
                 <div className={'mx-2 mt-2'}>
-                    <Table<DataType> columns={columns} dataSource={data} />
+                    <Table<DataType> columns={columns} dataSource={data} onRow={(record, index) => ({
+                        onClick: () => handleRowClick(record, index),
+                    })} />
                 </div>
             </Content>
+            {open && (
+                <DrawerComponent closeModal={onClose} openModal={open} selectedData = {selectedData}/>
+            )}
         </>
 
 
