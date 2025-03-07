@@ -1,4 +1,4 @@
-import { CheckSquare, Calendar, FileText } from "lucide-react";
+import { CheckSquare, FileText } from "lucide-react";
 import {Layout, theme} from "antd";
 import {Link} from "react-router-dom";
 import {useState} from "react";
@@ -18,11 +18,6 @@ function HeaderComponent(){
                     <Link to="tasks" onClick={() => setActive("tasks")}>
                         <div className={`p-3 rounded-2xl ${active === "tasks" ? "bg-white shadow-sm" : ""}`}>
                             <CheckSquare size={28} className={active === "tasks" ? "text-blue-500" : "text-gray-400"} />
-                        </div>
-                    </Link>
-                    <Link to="form" onClick={() => setActive("calendar")}>
-                        <div className={`p-3 rounded-2xl ${active === "calendar" ? "bg-white shadow-sm" : ""}`}>
-                            <Calendar size={28} className={active === "calendar" ? "text-blue-500" : "text-gray-400"} />
                         </div>
                     </Link>
 

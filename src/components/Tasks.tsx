@@ -1,6 +1,6 @@
 import {Content} from "antd/es/layout/layout";
+import type {TableProps} from 'antd';
 import {Flex, Table, Tag} from 'antd';
-import type { TableProps } from 'antd';
 import * as React from "react";
 import {useState} from "react";
 import DrawerComponent from "./DrawerComponent.tsx";
@@ -96,15 +96,10 @@ function Tasks(){
     };
     const [selectedTags, setSelectedTags] = React.useState<string>('All');
     const handleChange = (tag: string) => {
-        const nextSelectedTags = tag
-        console.log('You are interested in: ', nextSelectedTags);
-        setSelectedTags(nextSelectedTags);
-        showDrawer()
+        setSelectedTags(tag);
     };
     const [open, setOpen] = useState(false);
-    const showDrawer = () => {
-        setOpen(true);
-    };
+
     const onClose = () => {
         setOpen(false);
     };
