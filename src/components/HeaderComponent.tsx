@@ -1,7 +1,8 @@
 import {CheckSquare, FileText, Plus} from "lucide-react";
-import {Layout, theme,Modal } from "antd";
+import {Layout, theme, Modal, Button, Input} from "antd";
 import {Link} from "react-router-dom";
 import {useState} from "react";
+import {DatePicker, TimePicker} from "antd/lib";
 
 const {Header} = Layout
 
@@ -47,10 +48,32 @@ function HeaderComponent() {
                 </div>
 
             </Header>
-            <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-                <p>Some contents...</p>
-                <p>Some contents...</p>
-                <p>Some contents...</p>
+            <Modal
+                title={active === "tasks" ? "Task Details" : "Add Notes"}
+                open={isModalOpen}
+                onOk={handleOk}
+                onCancel={handleCancel}
+                footer={
+                    active === "notes" && (
+                        <>
+                            <Button onClick={handleCancel}>Cancel</Button>
+                            <Button type="primary" onClick={handleOk}>Save</Button>
+                        </>
+                    )
+                }
+            >
+                {active === "tasks" ? (
+                    <div>
+                        <Input placeholder="Task" style={{ marginBottom: 10 }} />
+                        <DatePicker style={{ width: '100%', marginBottom: 10 }} />
+                        <TimePicker style={{ width: '100%' }} format="HH:mm" />
+                    </div>
+                ) : (
+                    <div>
+                        <Input placeholder="Title" style={{ marginBottom: 10 }} />
+                        <Input.TextArea placeholder="Description" rows={4} />
+                    </div>
+                )}
             </Modal>
         </>
     )
