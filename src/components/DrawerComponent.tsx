@@ -1,13 +1,18 @@
-import {Drawer,Button,Input, Tag} from "antd";
+import {Drawer, Button, Input, Tag} from "antd";
 import {DataType} from "./Tasks.tsx";
 import {DeleteOutlined} from "@ant-design/icons";
 import {useState} from "react";
 
-function DrawerComponent({closeModal,openModal,selectedData}: {closeModal?: () => void , openModal : boolean,selectedData:DataType }) {
+function DrawerComponent({closeModal, openModal, selectedData}: {
+    closeModal?: () => void,
+    openModal: boolean,
+    selectedData: DataType
+}) {
     const [taskData, setTaskData] = useState(selectedData);
-
     const handleChange = (key: keyof DataType, value: string) => {
-        setTaskData({ ...taskData, [key]: value });
+        setTaskData({...taskData, [key]: value});
+
+
     };
 
     const handleUpdate = () => {
@@ -19,14 +24,14 @@ function DrawerComponent({closeModal,openModal,selectedData}: {closeModal?: () =
         console.log("Deleted Task:", taskData.key);
         // Add delete logic here
     };
-    return(
+    return (
         <>
             <Drawer
                 size="large"
                 title={
                     <div className="flex justify-between items-center w-full">
                         <span>Task Details</span>
-                        <Button type="text" icon={<DeleteOutlined />} onClick={handleDelete} />
+                        <Button type="text" icon={<DeleteOutlined/>} onClick={handleDelete}/>
                     </div>
                 }
                 onClose={closeModal}
@@ -76,4 +81,5 @@ function DrawerComponent({closeModal,openModal,selectedData}: {closeModal?: () =
         </>
     )
 }
+
 export default DrawerComponent
