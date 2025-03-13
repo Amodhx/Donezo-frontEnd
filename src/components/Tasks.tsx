@@ -4,16 +4,17 @@ import {Flex, Table, Tag} from 'antd';
 import * as React from "react";
 import {useState} from "react";
 import DrawerComponent from "./DrawerComponent.tsx";
+import TaskModel from "../model/TaskModel.ts";
 
-export interface DataType {
-    key: string;
-    task: string;
-    status: string;
-    tags: string[];
-    dueDate: string;
-    estimatedTime: string;
-}
-const columns: TableProps<DataType>['columns'] = [
+// export interface DataType {
+//     key: string;
+//     task: string;
+//     status: string;
+//     tags: string[];
+//     dueDate: string;
+//     estimatedTime: string;
+// }
+const columns: TableProps<TaskModel>['columns'] = [
     {
         dataIndex: 'task',
         key: 'task',
@@ -60,37 +61,61 @@ const columns: TableProps<DataType>['columns'] = [
     }
 
 ];
-const data: DataType[] = [
+const data: TaskModel[] = [
     {
-        key: '1',
+        task_id: '1',
         task: 'lorem sadnojsadn sajdnas dasdsa sad sadsa dsadsad sa dsad sa dsa as',
         status: 'In progress',
         tags: ['In progress'],
         dueDate : '2025/02/12',
-        estimatedTime : '25h'
+        time : '25h'
     },
     {
-        key: '2',
+        task_id: '2',
         task: 'lorem sadnojsadn sajdnas dasdsa sad sadsa dsadsad sa dsad sa dsa as',
         status: 'Completed',
         tags: ['Completed'],
         dueDate : '2025/02/12',
-        estimatedTime : '25h'
+        time : '25h'
     },
     {
-        key: '3',
+        task_id: '3',
         task: 'lorem sadnojsadn sajdnas dasdsa sad sadsa dsadsad sa dsad sa dsa as',
         status: 'New Tasks',
         tags: ['New Tasks'],
         dueDate : '2025/02/12',
-        estimatedTime : '25h'
+        time : '25h'
+    },
+    {
+        task_id: '4',
+        task: 'lorem sadnojsadn sajdnas dasdsa sad sadsa dsadsad sa dsad sa dsa as',
+        status: 'In progress',
+        tags: ['In progress'],
+        dueDate : '2025/02/12',
+        time : '25h'
+    },
+    {
+        task_id: '5',
+        task: 'lorem sadnojsadn sajdnas dasdsa sad sadsa dsadsad sa dsad sa dsa as',
+        status: 'Completed',
+        tags: ['Completed'],
+        dueDate : '2025/02/12',
+        time : '25h'
+    },
+    {
+        task_id: '6',
+        task: 'lorem sadnojsadn sajdnas dasdsa sad sadsa dsadsad sa dsad sa dsa as',
+        status: 'New Tasks',
+        tags: ['New Tasks'],
+        dueDate : '2025/02/12',
+        time : '25h'
     },
 ];
 const tagsData = ['All','New Tasks','In Progress','Completed'];
 
 function Tasks(){
-    const [selectedData,setSelectedData] = useState<DataType>()
-    const handleRowClick = (record: DataType) => {
+    const [selectedData,setSelectedData] = useState<TaskModel>()
+    const handleRowClick = (record: TaskModel) => {
         setSelectedData(record);
         setOpen(true)
     };
@@ -120,7 +145,7 @@ function Tasks(){
                     </Flex>
                 </div>
                 <div className={'mx-2 mt-2'}>
-                    <Table<DataType> columns={columns} dataSource={data} onRow={(record) => ({
+                    <Table<TaskModel> columns={columns} dataSource={data} onRow={(record) => ({
                         onClick: () => handleRowClick(record),
                     })} />
                 </div>
