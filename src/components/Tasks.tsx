@@ -2,11 +2,12 @@ import {Content} from "antd/es/layout/layout";
 import type {TableProps} from 'antd';
 import {Flex, Table, Tag} from 'antd';
 import * as React from "react";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import DrawerComponent from "./DrawerComponent.tsx";
 import TaskModel from "../model/TaskModel.ts";
-import {RootState} from "../store/Store.ts";
-import {useSelector} from "react-redux";
+import {AppDispatch, RootState} from "../store/Store.ts";
+import {useDispatch, useSelector} from "react-redux";
+import {addTask} from "../reducers/TaskSlices.ts";
 
 const columns: TableProps<TaskModel>['columns'] = [
     {
@@ -60,6 +61,7 @@ const tagsData = ['All','New Tasks','In Progress','Completed'];
 
 function Tasks(){
     const data : TaskModel[] = useSelector((state : RootState) => state.tasks);
+    const dispatch = useDispatch<AppDispatch>();
     const [selectedData,setSelectedData] = useState<TaskModel>()
     const handleRowClick = (record: TaskModel) => {
         setSelectedData(record);
@@ -74,6 +76,9 @@ function Tasks(){
     const onClose = () => {
         setOpen(false);
     };
+    useEffect(() => {
+           dispatch(addTask(new TaskModel('1','dsa','New Tasks',['New Tasks'],'afs','asf')));
+    },[]);
     return(
         <>
             <Content>

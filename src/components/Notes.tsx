@@ -1,28 +1,54 @@
-import {Content} from "antd/es/layout/layout";
-import {theme} from "antd";
+import { Content } from "antd/es/layout/layout";
+import { Col, Row, theme } from "antd";
+import { EditOutlined,SettingOutlined } from '@ant-design/icons';
+import { Avatar, Card } from 'antd';
 
-function Notes(){
+const { Meta } = Card;
+
+function Notes() {
     const {
-        token: { colorBgContainer, borderRadiusLG },
+        token: {borderRadiusLG},
     } = theme.useToken();
-    return(
+
+    return (
         <>
             <Content>
                 <div
                     style={{
                         padding: 24,
                         minHeight: 360,
-                        background: colorBgContainer,
                         borderRadius: borderRadiusLG,
-                        margin : '10px'
+                        margin: '10px'
                     }}
                 >
-                    Notes
+                    <Row gutter={[16, 16]}>
+                            <Col key={1} xs={12} sm={12} md={6} lg={6} xl={6}>
+                                <Card
+                                    style={{ width: '100%' }}
+                                    cover={
+                                        <img
+                                            alt="example"
+                                            src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                                        />
+                                    }
+                                    actions={[
+                                        <SettingOutlined key="setting" />,
+                                        <EditOutlined key="edit" />,
+                                    ]}
+                                >
+                                    <Meta
+                                        avatar={<Avatar src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${  1}`} />}
+                                        title={`Card ${1}`}
+                                        description="This is the description"
+                                    />
+                                </Card>
+                            </Col>
+
+                    </Row>
                 </div>
             </Content>
         </>
-
-
-    )
+    );
 }
-export default Notes
+
+export default Notes;
