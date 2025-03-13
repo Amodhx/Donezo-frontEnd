@@ -4,6 +4,10 @@ import {Link} from "react-router-dom";
 import {useState} from "react";
 import {DatePicker, TimePicker} from "antd/lib";
 import { UploadOutlined } from '@ant-design/icons';
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "../store/Store.ts";
+import TaskModel from "../model/TaskModel.ts";
+import {addTask} from "../reducers/TaskSlices.ts";
 
 const {Header} = Layout
 
@@ -17,6 +21,7 @@ function HeaderComponent() {
     const [time,setTime] = useState<string>('');
     const [noteTitle,setNoteTitle] = useState<string>('');
     const [noteDesc,setNoteDesc] = useState<string>('');
+    const dispatch = useDispatch<AppDispatch>();
 
     const handleImageUpload = (file: File) => {
         setImageFile(file);
@@ -31,7 +36,7 @@ function HeaderComponent() {
 
     const handleOk = () => {
         if (active === "tasks") {
-            console.log(task,date,time)
+            dispatch(addTask(new TaskModel("1",task,"New Tasks",["New Tasks"],date,time)));
         }else {
             console.log(noteTitle,noteDesc,imageFile)
         }
