@@ -3,7 +3,7 @@ import taskSlices from "../reducers/TaskSlices.ts";
 
 export const store = configureStore({
     reducer: {
-        task : taskSlices
+        tasks : taskSlices
     }
 })
 

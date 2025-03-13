@@ -11,10 +11,10 @@ const taskSlice = createSlice({
             state.push(action.payload)
         },
         updateTask : (state,action)=>{
-
+            console.log(state,action)
         },
         deleteTask : (state,action)=>{
-
+            console.log(state,action)
         }
     }
 })

@@ -5,6 +5,8 @@ import * as React from "react";
 import {useState} from "react";
 import DrawerComponent from "./DrawerComponent.tsx";
 import TaskModel from "../model/TaskModel.ts";
+import {RootState} from "../store/Store.ts";
+import {useSelector} from "react-redux";
 
 const columns: TableProps<TaskModel>['columns'] = [
     {
@@ -53,59 +55,11 @@ const columns: TableProps<TaskModel>['columns'] = [
     }
 
 ];
-const data: TaskModel[] = [
-    {
-        task_id: '1',
-        task: 'lorem sadnojsadn sajdnas dasdsa sad sadsa dsadsad sa dsad sa dsa as',
-        status: 'In progress',
-        tags: ['In progress'],
-        dueDate : '2025/02/12',
-        time : '25h'
-    },
-    {
-        task_id: '2',
-        task: 'lorem sadnojsadn sajdnas dasdsa sad sadsa dsadsad sa dsad sa dsa as',
-        status: 'Completed',
-        tags: ['Completed'],
-        dueDate : '2025/02/12',
-        time : '25h'
-    },
-    {
-        task_id: '3',
-        task: 'lorem sadnojsadn sajdnas dasdsa sad sadsa dsadsad sa dsad sa dsa as',
-        status: 'New Tasks',
-        tags: ['New Tasks'],
-        dueDate : '2025/02/12',
-        time : '25h'
-    },
-    {
-        task_id: '4',
-        task: 'lorem sadnojsadn sajdnas dasdsa sad sadsa dsadsad sa dsad sa dsa as',
-        status: 'In progress',
-        tags: ['In progress'],
-        dueDate : '2025/02/12',
-        time : '25h'
-    },
-    {
-        task_id: '5',
-        task: 'lorem sadnojsadn sajdnas dasdsa sad sadsa dsadsad sa dsad sa dsa as',
-        status: 'Completed',
-        tags: ['Completed'],
-        dueDate : '2025/02/12',
-        time : '25h'
-    },
-    {
-        task_id: '6',
-        task: 'lorem sadnojsadn sajdnas dasdsa sad sadsa dsadsad sa dsad sa dsa as',
-        status: 'New Tasks',
-        tags: ['New Tasks'],
-        dueDate : '2025/02/12',
-        time : '25h'
-    },
-];
+
 const tagsData = ['All','New Tasks','In Progress','Completed'];
 
 function Tasks(){
+    const data : TaskModel[] = useSelector((state : RootState) => state.tasks);
     const [selectedData,setSelectedData] = useState<TaskModel>()
     const handleRowClick = (record: TaskModel) => {
         setSelectedData(record);
