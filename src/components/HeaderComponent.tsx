@@ -12,10 +12,15 @@ function HeaderComponent() {
     const [active, setActive] = useState("tasks");
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [imageFile, setImageFile] = useState<File | null>(null);
+    const [task,setTask] = useState<string>('');
+    const [date,setDate] = useState<string>('');
+    const [time,setTime] = useState<string>('');
+    const [noteTitle,setNoteTitle] = useState<string>('');
+    const [noteDesc,setNoteDesc] = useState<string>('');
 
     const handleImageUpload = (file: File) => {
         setImageFile(file);
-        return false; // Prevents automatic upload behavior in Ant Design
+        return false;
     };
     const {
         token: {colorBgContainer},
@@ -25,12 +30,17 @@ function HeaderComponent() {
     };
 
     const handleOk = () => {
-        setIsModalOpen(false);
+        if (active === "tasks") {
+            console.log(task,date,time)
+        }else {
+            console.log(noteTitle,noteDesc,imageFile)
+        }
     };
 
     const handleCancel = () => {
         setIsModalOpen(false);
     };
+     
     return (
         <>
             <Header style={{padding: '0', background: colorBgContainer}}>
@@ -61,24 +71,22 @@ function HeaderComponent() {
                 onOk={handleOk}
                 onCancel={handleCancel}
                 footer={
-                    active === "notes" && (
                         <>
                             <Button onClick={handleCancel}>Cancel</Button>
                             <Button type="primary" onClick={handleOk}>Save</Button>
                         </>
-                    )
                 }
             >
                 {active === "tasks" ? (
                     <div>
-                        <Input placeholder="Task" style={{ marginBottom: 10 }} />
-                        <DatePicker style={{ width: '100%', marginBottom: 10 }} />
-                        <TimePicker style={{ width: '100%' }} format="HH:mm" />
+                        <Input placeholder="Task" style={{ marginBottom: 10 }} onChange={(e)=>{setTask(e.target.value)}}/>
+                        <DatePicker style={{ width: '100%', marginBottom: 10 }}  onChange={(_date,dateString)=> setDate(dateString as string)}/>
+                        <TimePicker style={{ width: '100%' }} format="HH:mm" onChange={(_time, timeString) => setTime(timeString as string)} />
                     </div>
                 ) : (
                     <div>
-                        <Input placeholder="Title" style={{marginBottom: 10}}/>
-                        <Input.TextArea placeholder="Description" rows={4} style={{marginBottom: 10}}/>
+                        <Input placeholder="Title" style={{marginBottom: 10}} onChange={(e)=>{setNoteTitle(e.target.value)}}/>
+                        <Input.TextArea placeholder="Description" rows={4} style={{marginBottom: 10}} onChange={(e)=>{setNoteDesc(e.target.value)}}/>
 
                         {/* Image Upload Field */}
                         <Upload
