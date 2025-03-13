@@ -8,11 +8,13 @@ import {useDispatch} from "react-redux";
 import {AppDispatch} from "../store/Store.ts";
 import TaskModel from "../model/TaskModel.ts";
 import {addTask} from "../reducers/TaskSlices.ts";
+import {toast, Toaster} from "react-hot-toast";
 
 const {Header} = Layout
 
 
 function HeaderComponent() {
+    const [fileList, setFileList] = useState([]);
     const [active, setActive] = useState("tasks");
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [imageFile, setImageFile] = useState<File | null>(null);
@@ -22,6 +24,7 @@ function HeaderComponent() {
     const [noteTitle,setNoteTitle] = useState<string>('');
     const [noteDesc,setNoteDesc] = useState<string>('');
     const dispatch = useDispatch<AppDispatch>();
+
 
     const handleImageUpload = (file: File) => {
         setImageFile(file);
@@ -33,12 +36,29 @@ function HeaderComponent() {
     const showModal = () => {
         setIsModalOpen(true);
     };
-
+    function clearModalFields(){
+        setTask('')
+        setDate('')
+        setTime('')
+        setNoteTitle('')
+        setNoteDesc('')
+        setImageFile(null)
+        handleClearFile();
+    }
+    const handleClearFile = () => {
+        setFileList([]); // Clears the uploaded file
+    };
     const handleOk = () => {
         if (active === "tasks") {
             dispatch(addTask(new TaskModel("1",task,"New Tasks",["New Tasks"],date,time)));
+            setIsModalOpen(false);
+            toast.success('Successfully Saved!')
+            clearModalFields();
         }else {
             console.log(noteTitle,noteDesc,imageFile)
+            setIsModalOpen(false);
+            toast.success('Successfully Saved!')
+            clearModalFields();
         }
     };
 
@@ -48,6 +68,7 @@ function HeaderComponent() {
      
     return (
         <>
+            <div><Toaster/></div>
             <Header style={{padding: '0', background: colorBgContainer}}>
                 <div className="mx-5 w-25 h-16 flex items-center py-5 space-x-3">
                     <Link to="tasks" onClick={() => setActive("tasks")}>
@@ -76,25 +97,34 @@ function HeaderComponent() {
                 onOk={handleOk}
                 onCancel={handleCancel}
                 footer={
-                        <>
-                            <Button onClick={handleCancel}>Cancel</Button>
-                            <Button type="primary" onClick={handleOk}>Save</Button>
-                        </>
+                    <>
+                        <Button onClick={handleCancel}>Cancel</Button>
+                        <Button type="primary" onClick={handleOk}>Save</Button>
+                    </>
                 }
             >
                 {active === "tasks" ? (
                     <div>
-                        <Input placeholder="Task" style={{ marginBottom: 10 }} onChange={(e)=>{setTask(e.target.value)}}/>
-                        <DatePicker style={{ width: '100%', marginBottom: 10 }}  onChange={(_date,dateString)=> setDate(dateString as string)}/>
-                        <TimePicker style={{ width: '100%' }} format="HH:mm" onChange={(_time, timeString) => setTime(timeString as string)} />
+                        <Input value={task} placeholder="Task" style={{marginBottom: 10}} onChange={(e) => {
+                            setTask(e.target.value)
+                        }}/>
+                        <DatePicker style={{width: '100%', marginBottom: 10}}
+                                    onChange={(_date, dateString) => setDate(dateString as string)}/>
+                        <TimePicker style={{width: '100%'}} format="HH:mm"
+                                    onChange={(_time, timeString) => setTime(timeString as string)}/>
                     </div>
                 ) : (
                     <div>
-                        <Input placeholder="Title" style={{marginBottom: 10}} onChange={(e)=>{setNoteTitle(e.target.value)}}/>
-                        <Input.TextArea placeholder="Description" rows={4} style={{marginBottom: 10}} onChange={(e)=>{setNoteDesc(e.target.value)}}/>
+                        <Input value={noteTitle} placeholder="Title" style={{marginBottom: 10}} onChange={(e) => {
+                            setNoteTitle(e.target.value)
+                        }}/>
+                        <Input.TextArea value={noteDesc} placeholder="Description" rows={4} style={{marginBottom: 10}} onChange={(e) => {
+                            setNoteDesc(e.target.value)
+                        }}/>
 
                         {/* Image Upload Field */}
                         <Upload
+                            fileList={fileList}
                             beforeUpload={handleImageUpload}
                             showUploadList={{showPreviewIcon: false}}
                             maxCount={1}
