@@ -1,8 +1,9 @@
 import {CheckSquare, FileText, Plus} from "lucide-react";
-import {Layout, theme, Modal, Button, Input} from "antd";
+import {Layout, theme, Modal, Button, Input, Upload} from "antd";
 import {Link} from "react-router-dom";
 import {useState} from "react";
 import {DatePicker, TimePicker} from "antd/lib";
+import { UploadOutlined } from '@ant-design/icons';
 
 const {Header} = Layout
 
@@ -10,6 +11,12 @@ const {Header} = Layout
 function HeaderComponent() {
     const [active, setActive] = useState("tasks");
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [imageFile, setImageFile] = useState<File | null>(null);
+
+    const handleImageUpload = (file: File) => {
+        setImageFile(file);
+        return false; // Prevents automatic upload behavior in Ant Design
+    };
     const {
         token: {colorBgContainer},
     } = theme.useToken();
@@ -70,8 +77,28 @@ function HeaderComponent() {
                     </div>
                 ) : (
                     <div>
-                        <Input placeholder="Title" style={{ marginBottom: 10 }} />
-                        <Input.TextArea placeholder="Description" rows={4} />
+                        <Input placeholder="Title" style={{marginBottom: 10}}/>
+                        <Input.TextArea placeholder="Description" rows={4} style={{marginBottom: 10}}/>
+
+                        {/* Image Upload Field */}
+                        <Upload
+                            beforeUpload={handleImageUpload}
+                            showUploadList={{showPreviewIcon: false}}
+                            maxCount={1}
+                        >
+                            <Button icon={<UploadOutlined/>}>Upload Image</Button>
+                        </Upload>
+
+                        {/* Preview Uploaded Image */}
+                        {imageFile && (
+                            <div style={{marginTop: 10}}>
+                                <img
+                                    src={URL.createObjectURL(imageFile)}
+                                    alt="Uploaded"
+                                    style={{maxWidth: '100%', maxHeight: 200, borderRadius: 8}}
+                                />
+                            </div>
+                        )}
                     </div>
                 )}
             </Modal>
