@@ -1,15 +1,15 @@
 import {Drawer, Button, Input, Tag} from "antd";
-import {DataType} from "./Tasks.tsx";
 import {DeleteOutlined} from "@ant-design/icons";
 import {useState} from "react";
+import TaskModel from "../model/TaskModel.ts";
 
 function DrawerComponent({closeModal, openModal, selectedData}: {
     closeModal?: () => void,
     openModal: boolean,
-    selectedData: DataType
+    selectedData: TaskModel
 }) {
     const [taskData, setTaskData] = useState(selectedData);
-    const handleChange = (key: keyof DataType, value: string) => {
+    const handleChange = (key: keyof TaskModel, value: string) => {
         setTaskData({...taskData, [key]: value});
 
 
@@ -21,7 +21,7 @@ function DrawerComponent({closeModal, openModal, selectedData}: {
     };
 
     const handleDelete = () => {
-        console.log("Deleted Task:", taskData.key);
+        console.log("Deleted Task:", taskData);
         // Add delete logic here
     };
     return (
@@ -67,8 +67,8 @@ function DrawerComponent({closeModal, openModal, selectedData}: {
 
                     <label>Estimated Time</label>
                     <Input
-                        value={taskData.estimatedTime}
-                        onChange={(e) => handleChange("estimatedTime", e.target.value)}
+                        value={taskData.time}
+                        onChange={(e) => handleChange("time", e.target.value)}
                     />
 
                     <div className="flex justify-center mt-4">
