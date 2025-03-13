@@ -6,14 +6,6 @@ import {useState} from "react";
 import DrawerComponent from "./DrawerComponent.tsx";
 import TaskModel from "../model/TaskModel.ts";
 
-// export interface DataType {
-//     key: string;
-//     task: string;
-//     status: string;
-//     tags: string[];
-//     dueDate: string;
-//     estimatedTime: string;
-// }
 const columns: TableProps<TaskModel>['columns'] = [
     {
         dataIndex: 'task',
