@@ -2,7 +2,11 @@ import {Drawer, Button, Input, Tag, Select, DatePicker, TimePicker} from "antd";
 import {DeleteOutlined} from "@ant-design/icons";
 import {useState} from "react";
 import TaskModel from "../model/TaskModel.ts";
-import dayjs from 'dayjs'; // For date formatting
+import dayjs from 'dayjs';
+import {deleteTask, updateTask} from "../reducers/TaskSlices.ts";
+import {AppDispatch} from "../store/Store.ts";
+import {useDispatch} from "react-redux";
+import {toast} from "react-hot-toast";
 
 const { Option } = Select;
 
@@ -12,19 +16,51 @@ function DrawerComponent({closeModal, openModal, selectedData}: {
     selectedData: TaskModel
 }) {
     const [taskData, setTaskData] = useState(selectedData);
+    const dispatch = useDispatch<AppDispatch>();
 
     const handleChange = (key: keyof TaskModel, value: string) => {
         setTaskData({...taskData, [key]: value});
     };
 
     const handleUpdate = () => {
-        console.log("Updated Data:", taskData);
-        // Add update logic here
+        toast.promise(
+            new Promise((resolve) => {
+                setTimeout(() => {
+                    dispatch(updateTask(taskData));
+                    resolve(null); // Resolve after a fixed time
+                }, 1000); // Set the delay (e.g., 2 seconds)
+            }),
+            {
+                loading: 'Saving...',
+                success: <b>Task Updated</b>,
+                error: <b>Could not update.</b>,
+            }
+        );
+
+        if (closeModal){
+            closeModal()
+        }
+
     };
 
     const handleDelete = () => {
-        console.log("Deleted Task:", taskData);
-        // Add delete logic here
+        toast.promise(
+            new Promise((resolve) => {
+                setTimeout(() => {
+                    dispatch(deleteTask(taskData));
+                    resolve(null); // Resolve after a fixed time
+                }, 1000); // Set the delay (e.g., 2 seconds)
+            }),
+            {
+                loading: 'Saving...',
+                success: <b>Task Deleted!!</b>,
+                error: <b>Could not delete.</b>,
+            }
+        );
+
+        if (closeModal){
+            closeModal()
+        }
     };
 
     return (
