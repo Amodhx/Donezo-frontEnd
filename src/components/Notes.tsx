@@ -1,19 +1,58 @@
 import { Content } from "antd/es/layout/layout";
 import { Col, Row, theme } from "antd";
-import { EditOutlined,SettingOutlined } from '@ant-design/icons';
+import {DeleteOutlined, EditOutlined, EyeOutlined} from '@ant-design/icons';
 import { Avatar, Card } from 'antd';
 import NoteModel from "../model/NoteModel.ts";
-import {useSelector} from "react-redux";
-import {RootState} from "../store/Store.ts";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch, RootState} from "../store/Store.ts";
+import {toast} from "react-hot-toast";
+import {deleteNote} from "../reducers/NoteSlices.ts";
 
 const { Meta } = Card;
 
 function Notes() {
 
     const notes:NoteModel[] = useSelector((state:RootState) => state.notes)
+    const dispatch = useDispatch<AppDispatch>();
     const {
         token: {borderRadiusLG},
     } = theme.useToken();
+
+    async function handleView(note:NoteModel){
+        console.log(note)
+    }
+    async function handleEdit(note:NoteModel){
+        console.log(note)
+    }
+    async function handleDelete(note:NoteModel){
+        toast(
+            (t) => (
+                <div>
+                    <p>Are you sure you want to delete this note?</p>
+                    <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
+                        <button
+                            style={{ backgroundColor: '#f5222d', color: '#fff', border: 'none', padding: '5px 10px', cursor: 'pointer' }}
+                            onClick={() => {
+                                dispatch(deleteNote(note))
+                                toast.dismiss(t.id);
+                            }}
+                        >
+                            Confirm
+                        </button>
+                        <button
+                            style={{ backgroundColor: '#1890ff', color: '#fff', border: 'none', padding: '5px 10px', cursor: 'pointer' }}
+                            onClick={() => toast.dismiss(t.id)} // Dismiss without action
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            ),
+            {
+                duration: 6000, // Toast stays visible until dismissed
+            }
+        );
+    }
 
     return (
         <>
@@ -46,8 +85,9 @@ function Notes() {
                                         )
                                     }
                                     actions={[
-                                        <SettingOutlined key="setting" />,
-                                        <EditOutlined key="edit" />,
+                                        <EyeOutlined key="view" onClick={() => handleView(note)} />,
+                                        <EditOutlined key="edit" onClick={() => handleEdit(note)} />,
+                                        <DeleteOutlined key="delete" onClick={() => handleDelete(note)} style={{ color: 'red' }} />,
                                     ]}
                                 >
                                     <Meta
