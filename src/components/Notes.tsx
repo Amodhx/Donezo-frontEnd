@@ -7,6 +7,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../store/Store.ts";
 import {toast} from "react-hot-toast";
 import {deleteNote} from "../reducers/NoteSlices.ts";
+import {useState} from "react";
+import ModalComponent from "./ModalComponent.tsx";
 
 const { Meta } = Card;
 
@@ -14,15 +16,22 @@ function Notes() {
 
     const notes:NoteModel[] = useSelector((state:RootState) => state.notes)
     const dispatch = useDispatch<AppDispatch>();
+    const [open, setOpen] = useState(false);
+    const [selectedData,setSelectedData] = useState<NoteModel>()
+    const onClose = () => {
+        setOpen(false);
+    };
     const {
         token: {borderRadiusLG},
     } = theme.useToken();
 
     async function handleView(note:NoteModel){
-        console.log(note)
+        setSelectedData(note)
+        setOpen(true)
     }
     async function handleEdit(note:NoteModel){
-        console.log(note)
+        setSelectedData(note)
+        setOpen(true)
     }
     async function handleDelete(note:NoteModel){
         toast(
@@ -35,6 +44,7 @@ function Notes() {
                             onClick={() => {
                                 dispatch(deleteNote(note))
                                 toast.dismiss(t.id);
+                                toast.success('Successfully Deleted!')
                             }}
                         >
                             Confirm
@@ -101,6 +111,9 @@ function Notes() {
                     </Row>
                 </div>
             </Content>
+            {open && selectedData && (
+                <ModalComponent closeModal={onClose} openModal={open} selectedData = {selectedData}/>
+            )}
         </>
     );
 }

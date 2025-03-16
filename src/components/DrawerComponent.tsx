@@ -31,7 +31,7 @@ function DrawerComponent({closeModal, openModal, selectedData}: {
                 }, 1000); // Set the delay (e.g., 2 seconds)
             }),
             {
-                loading: 'Saving...',
+                loading: 'Updating...',
                 success: <b>Task Updated</b>,
                 error: <b>Could not update.</b>,
             }
@@ -52,7 +52,7 @@ function DrawerComponent({closeModal, openModal, selectedData}: {
                 }, 1000); // Set the delay (e.g., 2 seconds)
             }),
             {
-                loading: 'Saving...',
+                loading: 'Deleting...',
                 success: <b>Task Deleted!!</b>,
                 error: <b>Could not delete.</b>,
             }
