@@ -3,24 +3,18 @@ import { Col, Row, theme } from "antd";
 import { EditOutlined,SettingOutlined } from '@ant-design/icons';
 import { Avatar, Card } from 'antd';
 import NoteModel from "../model/NoteModel.ts";
-import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, RootState} from "../store/Store.ts";
-import {useEffect} from "react";
-import {addNote} from "../reducers/NoteSlices.ts";
+import {useSelector} from "react-redux";
+import {RootState} from "../store/Store.ts";
 
 const { Meta } = Card;
 
 function Notes() {
 
     const notes:NoteModel[] = useSelector((state:RootState) => state.notes)
-    const dispatch = useDispatch<AppDispatch>();
     const {
         token: {borderRadiusLG},
     } = theme.useToken();
 
-    useEffect(() => {
-        dispatch(addNote(new NoteModel("1","First Note","This Is NOte Content Wuttoooo",null)));
-    }, []);
     return (
         <>
             <Content>

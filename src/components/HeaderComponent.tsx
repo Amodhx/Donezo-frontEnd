@@ -9,6 +9,8 @@ import {AppDispatch} from "../store/Store.ts";
 import TaskModel from "../model/TaskModel.ts";
 import {addTask} from "../reducers/TaskSlices.ts";
 import {toast, Toaster} from "react-hot-toast";
+import {addNote} from "../reducers/NoteSlices.ts";
+import NoteModel from "../model/NoteModel.ts";
 
 const {Header} = Layout
 
@@ -55,7 +57,7 @@ function HeaderComponent() {
             toast.success('Successfully Saved!')
             clearModalFields();
         }else {
-            console.log(noteTitle,noteDesc,imageFile)
+            dispatch(addNote(new NoteModel('1',noteTitle,noteDesc,imageFile)))
             setIsModalOpen(false);
             toast.success('Successfully Saved!')
             clearModalFields();
