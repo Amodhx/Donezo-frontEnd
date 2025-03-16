@@ -11,10 +11,13 @@ const noteSlice = createSlice({
             state.push(action.payload)
         },
         updateNote : (state,action) =>{
-            console.log(state,action)
+            const index = state.findIndex(note => note.note_id === action.payload.note_id);
+            if (index !== -1) {
+                state[index] = action.payload;
+            }
         },
         deleteNote : (state,action) =>{
-            console.log(state,action)
+            return state.filter(note => note.note_id !== action.payload.note_id);
         }
     }
 })
