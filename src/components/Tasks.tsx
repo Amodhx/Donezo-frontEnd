@@ -2,11 +2,12 @@ import {Content} from "antd/es/layout/layout";
 import type {TableProps} from 'antd';
 import {Flex, Table, Tag} from 'antd';
 import * as React from "react";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import DrawerComponent from "./DrawerComponent.tsx";
 import TaskModel from "../model/TaskModel.ts";
-import {RootState} from "../store/Store.ts";
-import {useSelector} from "react-redux";
+import {AppDispatch, RootState} from "../store/Store.ts";
+import {useDispatch, useSelector} from "react-redux";
+import {getTasks} from "../reducers/TaskSlices.ts";
 
 const columns: TableProps<TaskModel>['columns'] = [
     {
@@ -20,28 +21,27 @@ const columns: TableProps<TaskModel>['columns'] = [
     },
     {
         title: 'Tags',
-        key: 'tags',
-        dataIndex: 'tags',
-        render: (_, { tags }) => (
-            <>
-                {tags.map((tag) => {
-                    let color = tag.length > 5 ? 'geekblue' : 'green';
-                    if (tag === 'New Tasks') {
-                        color = 'volcano';
-                    }else if (tag === 'In Progress') {
-                        color = 'geekblue'
-                    }else if (tag === 'Completed') {
-                        color = 'green';
+        key: 'status',
+        dataIndex: 'status',
+        render: (status) => {
+            let color = 'default'; // Default color fallback
 
-                    }
-                    return (
-                        <Tag color={color} key={tag}>
-                            {tag.toUpperCase()}
-                        </Tag>
-                    );
-                })}
-            </>
-        ),
+            switch (status) {
+                case 'New Tasks':
+                    color = 'volcano';
+                    break;
+                case 'In Progress':
+                    color = 'geekblue';
+                    break;
+                case 'Completed':
+                    color = 'green';
+                    break;
+                default:
+                    color = 'default';
+            }
+
+            return <Tag color={color}>{status}</Tag>;
+        },
     },
     {
         title: 'Due Date',
@@ -59,6 +59,12 @@ const columns: TableProps<TaskModel>['columns'] = [
 const tagsData = ['All','New Tasks','In Progress','Completed'];
 
 function Tasks(){
+    const dispatch  = useDispatch<AppDispatch>();
+    useEffect(() => {
+        if (data.length === 0){
+            dispatch(getTasks())
+        }
+    }, []);
     const data : TaskModel[] = useSelector((state : RootState) => state.tasks);
     const [selectedData,setSelectedData] = useState<TaskModel>()
     const handleRowClick = (record: TaskModel) => {

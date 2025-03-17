@@ -98,11 +98,9 @@ function DrawerComponent({closeModal, openModal, selectedData}: {
                 {/* Tags */}
                 <label>Tags</label>
                 <div>
-                    {taskData.tags.map((tag, index) => (
-                        <Tag key={index} color="blue">
-                            {tag}
-                        </Tag>
-                    ))}
+                    <Tag color="blue">
+                        {taskData.status}
+                    </Tag>
                 </div>
 
                 {/* Due Date (DatePicker) */}

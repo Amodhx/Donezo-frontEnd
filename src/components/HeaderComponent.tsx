@@ -7,10 +7,10 @@ import { UploadOutlined } from '@ant-design/icons';
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../store/Store.ts";
 import TaskModel from "../model/TaskModel.ts";
-import {addTask} from "../reducers/TaskSlices.ts";
 import {toast, Toaster} from "react-hot-toast";
 import NoteModel from "../model/NoteModel.ts";
 import {saveNote} from "../reducers/NoteSlices.ts";
+import {saveTask} from "../reducers/TaskSlices.ts";
 
 const {Header} = Layout
 
@@ -52,7 +52,7 @@ function HeaderComponent() {
     };
     const handleOk = () => {
         if (active === "tasks") {
-            dispatch(addTask(new TaskModel("1",task,"New Tasks",["New Tasks"],date,time)));
+            dispatch(saveTask(new TaskModel("1",task,"New Tasks",date,time)));
             setIsModalOpen(false);
             toast.success('Successfully Saved!')
             clearModalFields();
