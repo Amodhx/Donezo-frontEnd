@@ -2,17 +2,36 @@
 import { Button, Input } from "antd";
 import { GoogleOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
  import {useNavigate} from "react-router-dom";
+ import {useState} from "react";
+ import Api_call from "../services/ApiCall.ts";
+ import UserModel from "../model/UserModel.ts";
+ import {toast, Toaster} from "react-hot-toast";
 function Login(){
+    const [email,setEmail] = useState("");
+    const [password,setPassword] = useState("");
     const navigate = useNavigate();
-    function onLoginBtnClick(){
-        navigate('form')
+
+    async function onLoginBtnClick(){
+        const data = new UserModel(email,password);
+        // eslint-disable-next-line
+        const  response:any = await Api_call.postApiCall('auth/signIn',data);
+        if (response){
+            if (response.status === 201){
+                if (response.data){
+                    navigate('form')
+                }
+            }else {
+                toast.error("Invalid Credentials!!!")
+            }
+        }
     }
     return(
         <>
+            <div><Toaster/></div>
             <div className="flex items-center justify-center min-h-screen bg-white relative overflow-hidden">
                 {/* Angled Gradient Bar */}
-                <div style={{ top: '56vh' }}
-                    className="absolute bottom-0  left-0 w-full h-2/3 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 transform -skew-y-6 origin-bottom-left rounded-t-4xl"
+                <div style={{top: '56vh'}}
+                     className="absolute bottom-0  left-0 w-full h-2/3 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 transform -skew-y-6 origin-bottom-left rounded-t-4xl"
                 ></div>
 
                 {/* Logo */}
@@ -29,8 +48,8 @@ function Login(){
                 </div>
 
                 {/* Login Form Container */}
-                <div   style={{ boxShadow :'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px'}}
-                    className="bg-white rounded-2xl p-8 w-96 relative z-10">
+                <div style={{boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px'}}
+                     className="bg-white rounded-2xl p-8 w-96 relative z-10">
                     <h2 className="text-center text-2xl font-semibold mb-4">Welcome back!</h2>
 
                     {/* Continue with Google Button */}
@@ -51,6 +70,7 @@ function Login(){
                             prefix={<MailOutlined/>}
                             placeholder="Enter your work email"
                             className="rounded-lg"
+                            onChange={(e) => setEmail(e.target.value)}
                         />
                     </div>
 
@@ -61,6 +81,7 @@ function Login(){
                             prefix={<LockOutlined/>}
                             placeholder="Enter password"
                             className="rounded-lg"
+                            onChange={(e) => setPassword(e.target.value)}
                         />
                         <div className="text-right mt-1">
                             <a href="#" className="text-purple-500 text-sm">
