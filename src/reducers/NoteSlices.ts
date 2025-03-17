@@ -8,7 +8,7 @@ export const getNotes = createAsyncThunk(
     async ()=>{
         try {
             // eslint-disable-next-line
-            const response: any = await Api_call.getApiCall('');
+            const response: any = await Api_call.getApiCall('/note/getAllNotes');
             return response.data;
         }catch (e) {
             console.log(e)
@@ -27,7 +27,7 @@ export const saveNote = createAsyncThunk(
                 formData.append("image",note.image)
             }
             // eslint-disable-next-line
-            const response:any =  await Api_call.postApiCallWithFromData('', formData);
+            const response:any =  await Api_call.postApiCallWithFromData('/note/saveNote', formData);
             return  response.data;
         }catch (e) {
             return  rejectWithValue(e);
@@ -46,7 +46,7 @@ export const updateNote = createAsyncThunk(
                 formData.append("image",note.image)
             }
             // eslint-disable-next-line
-            const response:any = await Api_call.patchApiCallWithFormData('',formData);
+            const response:any = await Api_call.patchApiCallWithFormData('/note/updateNote',formData);
             return  response.data;
         }catch (e) {
             return rejectWithValue(e);
@@ -58,7 +58,7 @@ export const deleteNote = createAsyncThunk(
     async (note:NoteModel,{rejectWithValue})=>{
         try {
             // eslint-disable-next-line
-            const response:any = await Api_call.deleteApiCall('', note.note_id);
+            const response:any = await Api_call.deleteApiCall('/note/deleteNote', note.note_id);
             return  response.data;
         }catch (e) {
             return rejectWithValue(e);

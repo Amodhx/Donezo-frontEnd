@@ -18,6 +18,7 @@ function ModalComponent({closeModal,openModal,selectedData}:{
         setNoteData({...noteData, [key]: value});
     };
     const handleImageUpload = (file: File) => {
+        setImageFile(null)
         setImageFile(file);
         return false;
     };
@@ -26,7 +27,7 @@ function ModalComponent({closeModal,openModal,selectedData}:{
         setImageFile(selectedData.image || null);
     }, [selectedData]);
     function handleUpdatingNote(){
-        noteData.image = imageFile;
+        // noteData.image = imageFile;
         console.log(noteData)
         dispatch(updateNote(noteData))
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -54,7 +55,7 @@ function ModalComponent({closeModal,openModal,selectedData}:{
                 {imageFile && (
                     <div style={{marginTop: 10}}>
                         <img
-                            src={URL.createObjectURL(imageFile)}
+                            src={imageFile ? `data:image/png;base64,${imageFile}` : undefined}
                             alt="Uploaded"
                             style={{maxWidth: '100%', maxHeight: 200, borderRadius: 8}}
                         />

@@ -6,14 +6,18 @@ import NoteModel from "../model/NoteModel.ts";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../store/Store.ts";
 import {toast} from "react-hot-toast";
-import {deleteNote} from "../reducers/NoteSlices.ts";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import ModalComponent from "./ModalComponent.tsx";
+import {deleteNote, getNotes} from "../reducers/NoteSlices.ts";
 
 const { Meta } = Card;
 
 function Notes() {
-
+    useEffect(() => {
+        if (notes.length === 0){
+            dispatch(getNotes());
+        }
+    }, []);
     const notes:NoteModel[] = useSelector((state:RootState) => state.notes)
     const dispatch = useDispatch<AppDispatch>();
     const [open, setOpen] = useState(false);
@@ -21,6 +25,7 @@ function Notes() {
     const onClose = () => {
         setOpen(false);
     };
+
     const {
         token: {borderRadiusLG},
     } = theme.useToken();
@@ -80,12 +85,12 @@ function Notes() {
                         {notes.map((note:NoteModel) => (
                             <Col key={1} xs={12} sm={12} md={6} lg={6} xl={6}>
                                 <Card
-                                    style={{ width: '100%' }}
+                                    style={{ width: '100%'}}
                                     cover={
                                         note.image ? (
                                             <img
                                                 alt={note.note_title}
-                                                src={URL.createObjectURL(note.image)}
+                                                src={note.image ? `data:image/png;base64,${note.image}` : undefined}
                                             />
                                         ) : (
                                             <img

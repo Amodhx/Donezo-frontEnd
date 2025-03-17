@@ -3,10 +3,10 @@ import {DeleteOutlined} from "@ant-design/icons";
 import {useState} from "react";
 import TaskModel from "../model/TaskModel.ts";
 import dayjs from 'dayjs';
-import {deleteTask, updateTask} from "../reducers/TaskSlices.ts";
 import {AppDispatch} from "../store/Store.ts";
 import {useDispatch} from "react-redux";
 import {toast} from "react-hot-toast";
+import {deleteTask, updateTask} from "../reducers/TaskSlices.ts";
 
 const { Option } = Select;
 
