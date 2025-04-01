@@ -77,6 +77,7 @@ function Tasks(){
                             },
                             body: JSON.stringify({ text: message }), // Send the message in the "text" field
                         });
+                        dispatch(getTasks())
                         resolve(null);
                     }, 1000);
                 }),
@@ -160,8 +161,8 @@ function Tasks(){
             <div
                 style={{
                     position: 'fixed',
-                    bottom: 20,
-                    right: 20,
+                    bottom: 50,
+                    right: 50,
                     zIndex: 1000,
                 }}
             >
